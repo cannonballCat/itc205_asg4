@@ -10,10 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.HotelHelper;
-import hotel.credit.CreditCard;
-import hotel.entities.Guest;
 import hotel.entities.Hotel;
-import hotel.entities.Room;
 
 @ExtendWith(MockitoExtension.class)
 class TestCheckoutBug {
@@ -22,12 +19,9 @@ class TestCheckoutBug {
 	CheckoutUI checkoutUi;
 	
 	Hotel hotel;
-	Guest guest;
-	Room room;
-	CreditCard creditCard;
 	CheckoutCTL control;
 	
-	int roomId = 101;
+	int roomId = 301;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -38,8 +32,11 @@ class TestCheckoutBug {
 	@Test
 	void testCheckoutBug() {
 		//arrange
+		control.setRoomState();
 		//act
+		control.roomIdEntered(roomId);
 		//assert
+		assertEquals(control.getTotal(), 0);
 	}
 
 }
