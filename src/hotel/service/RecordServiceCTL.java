@@ -29,6 +29,10 @@ public class RecordServiceCTL {
 		IOUtils.trace("PayForServiceCTL: run");
 		recordServiceUI.run();
 	}
+	
+	public void setRoomState() {
+		state = State.ROOM;
+	}
 
 
 	public void roomNumberEntered(int roomNumber) {
