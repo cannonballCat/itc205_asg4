@@ -35,6 +35,13 @@ public class CheckoutCTL {
 		checkoutUI.run();
 	}
 
+	public void setRoomState() {
+		state = State.ROOM;
+	}
+	
+	public double getTotal() {
+		return total;
+	}
 	
 	public void roomIdEntered(int roomId) {
 		if (state != State.ROOM) {
