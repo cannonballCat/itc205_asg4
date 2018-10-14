@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.HotelHelper;
@@ -16,7 +17,7 @@ import hotel.entities.Hotel;
 class TestCheckoutBug {
 	
 	@Mock
-	CheckoutUI checkoutUi;
+	CheckoutUI ui;
 	
 	Hotel hotel;
 	CheckoutCTL control;
@@ -25,8 +26,11 @@ class TestCheckoutBug {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		
 		hotel = HotelHelper.loadHotel();
 		control = new CheckoutCTL(hotel);
+		control.checkoutUI = ui;
 	}
 	
 	@Test
@@ -37,6 +41,16 @@ class TestCheckoutBug {
 		control.roomIdEntered(roomId);
 		//assert
 		assertEquals(control.getTotal(), 0);
+	}
+	
+	@Test
+	void testCheckoutFixed() {
+		//arrange
+		control.setRoomState();
+		//act
+		control.roomIdEntered(roomId);
+		//assert
+		assertEquals(control.getTotal(), 7);
 	}
 
 }

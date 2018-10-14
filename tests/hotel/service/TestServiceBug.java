@@ -7,16 +7,18 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import hotel.HotelHelper;
 import hotel.entities.Hotel;
+import hotel.service.RecordServiceUI.State;
 
 @ExtendWith(MockitoExtension.class)
 class TestServiceBug {
 	
 	@Mock
-	RecordServiceUI checkoutUi;
+	RecordServiceUI ui;
 	
 	Hotel hotel;
 	RecordServiceCTL control;
@@ -25,8 +27,11 @@ class TestServiceBug {
 	
 	@BeforeEach
 	void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
+		
 		hotel = HotelHelper.loadHotel();
 		control = new RecordServiceCTL(hotel);
+		control.recordServiceUI = ui;
 	}
 	
 	@Test
@@ -37,6 +42,18 @@ class TestServiceBug {
 		//act
 		control.roomNumberEntered(roomId);
 		//assert
-		//If this bug did not occur then an error would occur here
+		assertEquals(control.getState(), State.SERVICE);
+	}
+	
+	@Test
+	void testRecordServiceFixed() {
+		//arrange
+		String mesg = String.format("No active booking for room id: %d", roomId);
+		hotel.checkout(roomId);
+		control.setRoomState();
+		//act
+		control.roomNumberEntered(roomId);
+		//assert
+		verify(ui).displayMessage(mesg);
 	}
 }
