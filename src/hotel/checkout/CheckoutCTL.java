@@ -18,7 +18,7 @@ public class CheckoutCTL {
 	
 	private Hotel hotel;
 	private State state;
-	private CheckoutUI checkoutUI;
+	CheckoutUI checkoutUI;
 	private double total;
 	private int roomId;
 
